@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./Canvas.css"
-import { initXYAxis, drawPoint, drawLine, drawSegment, drawCircle } from "./Geometry";
+import { initXYAxis, drawPoint, drawLine, drawSegment, drawCircle, drawPolygon } from "./Geometry";
 
 class Canvas extends Component {
   constructor(props) {
@@ -41,7 +41,10 @@ class Canvas extends Component {
 
       switch (type[0]) {
         case 'p':
-          drawPoint({ ctx, canvas, obj })
+          if (type.endsWith("poly"))  
+            drawPolygon({ ctx, canvas, obj })
+          else 
+            drawPoint({ ctx, canvas, obj })
           break;
 
         case 'l':
