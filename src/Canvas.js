@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import "./Canvas.css"
 import { initXYAxis, drawPoint, drawLine, drawSegment, drawCircle, drawPolygon } from "./Geometry";
+import "./styles.css"
 
 class Canvas extends Component {
   constructor(props) {
@@ -69,7 +69,7 @@ class Canvas extends Component {
   }
 
   render() {
-    return <canvas width="800" height="500" className="image" ref={this.canvasRef} />;
+    return <canvas width="800" height="800" className="image" ref={this.canvasRef} />;
   }
 }
 

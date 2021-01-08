@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM from "react-dom"
 
 import Canvas from "./Canvas";
-import './App.css'
+import "./styles.css"
 
 class App extends Component {
   constructor() {
@@ -33,7 +33,7 @@ class App extends Component {
       <div>
         <h3>Geometry noob version</h3>
 
-        <div className="container">
+        <div>
           <textarea
             type="text"
             className="input"

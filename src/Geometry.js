@@ -121,6 +121,11 @@ export function drawPolygon(props) {
 
   ctx.strokeStyle = color;
   for (let i = 0; i < poly.length; i++) {
+    ctx.fillStyle = color;
+    ctx.beginPath()
+    ctx.arc(poly[i].x, poly[i].y, 3, 0, 2 * Math.PI)
+    ctx.fill()
+  
     let j = (i + 1) % poly.length
     ctx.beginPath();
     ctx.moveTo(poly[i].x, poly[i].y);

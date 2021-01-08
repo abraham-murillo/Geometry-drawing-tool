@@ -1,0 +1,26 @@
+body {
+  background-color: #f6f6fc
+}
+
+.App {
+  text-align: center;
+}
+
+.input {
+  display: inline-block;
+  padding: 0;
+  width: 20vw;
+  height: 70vw;
+  margin: 0vw 2vw;
+  background-color: white;
+  border:black 1px solid;
+}
+
+.image {
+  display: inline-block;
+  padding: 0;
+  width: 70vw;
+  height: 70vw;
+  margin: 0vw;
+  border:black 1px solid;
+}
