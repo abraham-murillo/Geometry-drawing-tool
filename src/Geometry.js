@@ -35,13 +35,28 @@ export function drawPoint(props) {
 }
 
 export function drawLine(props) {
-  // const {ctx, x, y} = info
-  // const {color = 'black'} = style
-  
-  // ctx.fillStyle = color;
-  // ctx.beginPath()
-  // ctx.arc(x, y, 20 * Math.sin(6 * 0.05) ** 2, 0, 2 * Math.PI)
-  // ctx.fill()
+  // line x1 y1 x2 y2 color
+  const {ctx, canvas, obj} = props
+
+  if (obj.length < 5)
+    return
+
+  const x1 = SCALE * parseInt(obj[1]) + canvas.width / 2
+  const y1 = -SCALE * parseInt(obj[2]) + canvas.height / 2
+  const x2 = SCALE * parseInt(obj[3]) + canvas.width / 2
+  const y2 = -SCALE * parseInt(obj[4]) + canvas.height / 2
+  const color = obj.length >= 5 ? obj[5] : 'black'
+
+  const dirx = x2 - x1
+  const diry = y2 - y1
+
+  ctx.beginPath();
+  ctx.moveTo(x1, y1);
+  ctx.lineTo(x1 + dirx * canvas.width, y1 + diry * canvas.height);
+  ctx.moveTo(x1, y1);
+  ctx.lineTo(x1 - dirx * canvas.width, y1 - diry * canvas.height);
+  ctx.strokeStyle = color;
+  ctx.stroke()
 }
 
 export function drawSegment(props) {
