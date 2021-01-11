@@ -6,6 +6,12 @@ class Canvas extends Component {
   constructor(props) {
     super(props)
     this.canvasRef = React.createRef()
+
+    this.state = {
+      scale: 15
+    }
+
+    this.zoomInOut = this.zoomInOut.bind(this)
   }
 
   componentDidMount() {
@@ -31,32 +37,32 @@ class Canvas extends Component {
     // Draws all objects again
     const objects = this.props.objects
     for (let i = 0; i < objects.length; i++) {
-      const obj = objects[i]
+      const object = objects[i]
 
-      if (obj.length < 3)
+      if (object.length < 3)
         continue // not ready yet 
 
-      console.log(obj)
-      const type = obj[0]
+      const type = object[0]
+      const objectToDraw = {ctx, canvas, obj: object, scale: this.state.scale}
 
       switch (type[0]) {
         case 'p':
           if (type.endsWith("poly"))  
-            drawPolygon({ ctx, canvas, obj })
+            drawPolygon(objectToDraw)
           else 
-            drawPoint({ ctx, canvas, obj })
+            drawPoint(objectToDraw)
           break;
 
         case 'l':
-          drawLine({ ctx, canvas, obj })
+          drawLine(objectToDraw)
           break;
 
         case 's':
-          drawSegment({ ctx, canvas, obj })
+          drawSegment(objectToDraw)
           break;
 
         case 'c':
-          drawCircle({ ctx, canvas, obj })
+          drawCircle(objectToDraw)
           break;
 
         default:
@@ -68,9 +74,27 @@ class Canvas extends Component {
     ctx.restore();
   }
 
+  zoomInOut(event) {
+    const deltaScale = 0.01
+
+    this.setState((prevState) => {
+      let newScale = prevState.scale + event.deltaY * -deltaScale;
+      newScale = Math.min(Math.max(.125, newScale), 30);
+
+      return {
+        scale: newScale
+      }
+    })
+  }
+
   render() {
-    return <canvas width="800" height="800" className="image" ref={this.canvasRef} />;
+    return <canvas width="600" height="600" 
+                  className="image" 
+                  ref={this.canvasRef} 
+                  onWheel={this.zoomInOut} />;
   }
 }
 
 export default Canvas
+
+
