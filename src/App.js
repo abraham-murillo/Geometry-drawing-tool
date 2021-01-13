@@ -18,8 +18,33 @@ class App extends Component {
   getInput(event) {
     this.setState(() => {
       const text = event.target.value
-      const newObjects = text.split('\n').map((str) => {
-        return str.split(' ')
+
+      const newObjects = text.split('\n').map((line) => {
+        const bySpaces = line.split(' ')
+
+        function isGood(props) {
+          const {c} = props
+          if ('0' <= c && c <= '9') 
+            return true;
+          if ('a' <= c && c <= 'z') 
+            return true;
+          if ('A' <= c && c <= 'Z') 
+            return true;
+          return c == '.' || c == '-' || c == '+' || c == '#'
+        }
+        
+        let properties = []
+        for (const [pos, toClean] of bySpaces.entries()) {
+          properties.push("")
+          for (const c of toClean) {
+            if (isGood({c}))
+              properties[properties.length - 1] += c
+          }
+        }
+
+        // console.log(properties)
+
+        return properties
       })
 
       return {
