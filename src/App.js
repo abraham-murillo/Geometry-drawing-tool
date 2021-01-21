@@ -3,16 +3,17 @@ import ReactDOM from "react-dom"
 
 import Canvas from "./Canvas";
 import "./styles.css"
+import "./button.css"
 
 class App extends Component {
   constructor() {
     super()
 
     this.state = {
-      objects: []
+      objects: [],
+      showGrid: true,
+      goToOrigin: false,
     }
-
-    this.getInput = this.getInput.bind(this)
   }
 
   getInput(event) {
@@ -53,20 +54,57 @@ class App extends Component {
     })
   }
 
+  showGridButton(event) {
+    this.setState((prevState) => {
+      return { 
+        showGrid: !prevState.showGrid 
+      }
+    })
+  }
+
+  goToOriginButton(event) {
+    this.setState((prevState) => {
+      return {
+        goToOrigin: true
+      }
+    })
+  }
+
+  keepMoving() {
+    this.setState(() => {
+      return {
+        goToOrigin: false
+      }
+    })
+  }
+
   render() {
     return (
       <div>
-        <h3>Geometry noob version</h3>
+        <div className="multi-button">
+          <button>Geometry noob version</button>
+
+          <button onClick={this.goToOriginButton.bind(this)} >
+            {this.state.goToOrigin ? 'Go to origin' : 'Keep moving'}
+          </button>
+
+          <button onClick={this.showGridButton.bind(this)}>
+            {this.state.showGrid ? 'Hide' : 'Show'} grid
+          </button>
+        </div>
 
         <div>
           <textarea
             type="text"
             className="input"
-            onChange={this.getInput}
+            onChange={this.getInput.bind(this)}
             >
           </textarea>
 
-          <Canvas objects={this.state.objects} />
+          <Canvas objects={this.state.objects} 
+                  showGrid={this.state.showGrid} 
+                  goToOrigin={this.state.goToOrigin} 
+                  keepMoving={this.keepMoving.bind(this)} />
         </div>
       </div>
     )

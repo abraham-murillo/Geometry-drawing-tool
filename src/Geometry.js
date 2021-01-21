@@ -28,12 +28,12 @@ export function drawGrid(props) {
 
 function getX(props) {
   const { x, canvas, scale } = props
-  return scale * parseFloat(x)
+  return scale * parseFloat(x) + canvas.width / 2
 }
 
 function getY(props) {
   const { y, canvas, scale } = props
-  return -scale * parseFloat(y) + canvas.height + 100
+  return -scale * parseFloat(y) + canvas.height / 2
 }
 
 export function drawPoint(props) {
