@@ -16,12 +16,22 @@ class Canvas extends Component {
       marginTop: 0,
     }
 
-    this.goToOrigin = this.goToOrigin.bind(this)
+    this.restartGoToOrigin = this.restartGoToOrigin.bind(this)
   }
 
-  componentDidMount() {
+  restartGoToOrigin() {
+    console.log("Restart go to origin Canvas")
+    
+  }
+
+  prepareCanvas() {
     const canvas = this.canvasRef.current
     const ctx = canvas.getContext('2d')
+
+    if (this.props.goToOrigin) {
+      this.restartGoToOrigin()
+      this.props.restartGoToOrigin()
+    }
 
     ctx.clearRect(-this.state.marginLeft, -this.state.marginTop, canvas.width, canvas.height);
 
@@ -38,41 +48,10 @@ class Canvas extends Component {
     }
   }
 
-  goToOrigin() {
-    this.setState(() => {
-      return {
-        x: 0,
-        y: 0,
-        marginLeft: 0, 
-        marginTop: 0,
-      }
-    })
-  }
-
-  componentDidUpdate() {
+  drawObjects() {
     const canvas = this.canvasRef.current
     const ctx = canvas.getContext('2d')
 
-    
-    ctx.clearRect(-this.state.marginLeft, -this.state.marginTop, canvas.width, canvas.height);
-
-    // if (this.props.goToOrigin) {
-    //   this.goToOrigin()
-    //   this.props.keepMoving()
-    // }
-    
-    ctx.fillStyle = 'white'
-    ctx.fillRect(-this.state.marginLeft, -this.state.marginTop, canvas.width, canvas.height)
-    ctx.rect(-this.state.marginLeft, -this.state.marginTop, canvas.width, canvas.height);
-
-    if (this.props.showGrid) {
-      ctx.fillStyle = drawGrid({deltaX: 10, deltaY: 10, color: '#606060', scale: this.state.scale})
-      ctx.fill()
-
-      ctx.fillStyle = drawGrid({deltaX: 100, deltaY: 100, color: 'black', scale: this.state.scale})
-      ctx.fill()
-    }
-  
     // Draws all objects again
     const objects = this.props.objects
     for (let i = 0; i < objects.length; i++) {
@@ -113,6 +92,15 @@ class Canvas extends Component {
     ctx.restore();
   }
 
+  componentDidMount() {
+    this.prepareCanvas()
+  }
+
+  componentDidUpdate() {
+    this.prepareCanvas()
+    this.drawObjects()
+  }
+
   zoomInOut(event) {
     const deltaScale = 0.01
 
@@ -127,8 +115,6 @@ class Canvas extends Component {
   }
 
   onMouseUp(event) {
-    event.preventDefault()
-
     this.setState(() => {
       return {
         dragging: false

@@ -63,14 +63,14 @@ class App extends Component {
   }
 
   goToOriginButton(event) {
-    this.setState((prevState) => {
+    this.setState(() => {
       return {
         goToOrigin: true
       }
     })
   }
 
-  keepMoving() {
+  restartGoToOrigin() {
     this.setState(() => {
       return {
         goToOrigin: false
@@ -85,7 +85,7 @@ class App extends Component {
           <button>Geometry noob version</button>
 
           <button onClick={this.goToOriginButton.bind(this)} >
-            {this.state.goToOrigin ? 'Go to origin' : 'Keep moving'}
+            Go to origin
           </button>
 
           <button onClick={this.showGridButton.bind(this)}>
@@ -104,7 +104,7 @@ class App extends Component {
           <Canvas objects={this.state.objects} 
                   showGrid={this.state.showGrid} 
                   goToOrigin={this.state.goToOrigin} 
-                  keepMoving={this.keepMoving.bind(this)} />
+                  restartGoToOrigin={this.restartGoToOrigin.bind(this)} />
         </div>
       </div>
     )
