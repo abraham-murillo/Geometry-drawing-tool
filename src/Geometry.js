@@ -1,32 +1,39 @@
 import React from "react";
 
-const LineWidth = 0.3 
-const Smallest = 2.5
-const Biggest = 3.5
+const LineWidth = 0.2 
+const Smallest = 3
+const Biggest = 3
 
-export function initXYAxis(props) {
-  const { ctx, canvas } = props
+export function drawGrid(props) {
+  // This don't scale itself :c
+  const { deltaX, deltaY, color, scale } = props
 
-  ctx.fillStyle = '#FFFFFF'
-  ctx.fillRect(0, 0, canvas.width, canvas.height)
+  const canvas = document.createElement("canvas")
+  const ctx = canvas.getContext('2d')
 
-  // x-axis
-  ctx.fillStyle = '#000000'
-  ctx.fillRect(canvas.width / 2, 0, 1, canvas.height)
+  canvas.width = deltaX
+  canvas.height = deltaY
+  ctx.fillStyle = 'white'
 
-  // y-axis
-  ctx.fillStyle = '#000000'
-  ctx.fillRect(0, canvas.height / 2, canvas.width, 1)
+  ctx.strokeStyle = color
+  ctx.moveTo(0, 0);
+  ctx.lineTo(deltaX * scale, 0)
+  ctx.stroke()
+
+  ctx.moveTo(0, 0)
+  ctx.lineTo(0, deltaY * scale)
+  ctx.stroke()
+  return ctx.createPattern(canvas, 'repeat')
 }
 
 function getX(props) {
   const { x, canvas, scale } = props
-  return scale * parseFloat(x) + canvas.width / 2
+  return scale * parseFloat(x)
 }
 
 function getY(props) {
   const { y, canvas, scale } = props
-  return -scale * parseFloat(y) + canvas.height / 2
+  return -scale * parseFloat(y) + canvas.height + 100
 }
 
 export function drawPoint(props) {
@@ -66,7 +73,7 @@ export function drawLine(props) {
 
   ctx.strokeStyle = color;
   ctx.beginPath();
-  ctx.lineWidth = Math.max(Smallest, Math.min(Biggest, scale * LineWidth))
+  ctx.lineWidth = Math.max(Smallest, Math.min(Biggest, scale * LineWidth)) / 2
   ctx.moveTo(x1, y1);
   ctx.lineTo(x1 + dirx * canvas.width, y1 + diry * canvas.height);
   ctx.moveTo(x1, y1);
@@ -90,7 +97,7 @@ export function drawSegment(props) {
 
   ctx.strokeStyle = color;
   ctx.beginPath();
-  ctx.lineWidth = Math.max(Smallest, Math.min(Biggest, scale * LineWidth))
+  ctx.lineWidth = Math.max(Smallest, Math.min(Biggest, scale * LineWidth)) / 2
   ctx.moveTo(x1, y1);
   ctx.lineTo(x2, y2);
   ctx.stroke()
@@ -134,7 +141,7 @@ export function drawPolygon(props) {
   const color = obj.length % 2 == 0 && poly.length >= 1 ? obj[obj.length - 1] : 'black'
 
   ctx.strokeStyle = color;
-  ctx.lineWidth = Math.max(Smallest, Math.min(Biggest, scale * LineWidth))
+  ctx.lineWidth = Math.max(Smallest, Math.min(Biggest, scale * LineWidth)) / 2
   for (let i = 0; i < poly.length; i++) {
     ctx.fillStyle = color;
     ctx.beginPath()

@@ -7,20 +7,22 @@ body {
 }
 
 .input {
-  display: inline-block;
+  position: static;
+  /* display: block; */
   padding: 0;
   width: 20vw;
-  height: 70vw;
+  height: 50vw;
   margin: 0vw 2vw;
   background-color: white;
   border:black 1px solid;
 }
 
 .image {
+  position: static;
   display: inline-block;
   padding: 0;
   width: 70vw;
-  height: 70vw;
+  height: 50vw;
   margin: 0vw;
   border:black 1px solid;
 }
