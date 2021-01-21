@@ -150,7 +150,7 @@ class Canvas extends Component {
 
   render() {
     return (
-        <canvas width="600" height="500" 
+        <canvas width="600" height="600" 
                 className="image" 
                 ref={this.canvasRef} 
                 onWheel={this.zoomInOut.bind(this)} 

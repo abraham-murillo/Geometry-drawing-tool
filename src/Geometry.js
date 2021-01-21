@@ -2,7 +2,7 @@ import React from "react";
 
 const LineWidth = 0.2 
 const Smallest = 3
-const Biggest = 3
+const Biggest = 4
 
 export function drawGrid(props) {
   // This don't scale itself :c
