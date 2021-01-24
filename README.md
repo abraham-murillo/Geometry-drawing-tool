@@ -43,7 +43,7 @@ Write text to know something special of that zone
 - `text x y color`
 
 ## Colors for a better geometric look
-The color is to give it a cooler look to the geometry you are viewing opposite to the default boring black, the color can be in a HEX or RGB format.
+The color is to give it a cooler look to the geometry you are viewing opposite to the default boring black, the color can be in a HEX format too.
 
 ## Text for better understanding
 Geometry is hard to understand with a bunch of objects, a little bit of text is always useful.
@@ -53,8 +53,8 @@ Geometry is hard to understand with a bunch of objects, a little bit of text is 
 - `poly 0 0 8 6 -8 6 #F3B823`
 - `c 5 10 4 #505A61`
 - `c -5 10 4 #505A61`
-- `c 5 10 2 RGB(6,124,200)`
-- `c -5 10 2 RGB(6,124,200)`
+- `c 5 10 2 #067cc8`
+- `c -5 10 2 #067cc8`
 - `c 5 10 1`
 - `c -5 10 1`
 - `c 0 10 11 blue`
