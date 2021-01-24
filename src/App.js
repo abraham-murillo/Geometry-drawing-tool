@@ -11,8 +11,8 @@ class App extends Component {
 
     this.state = {
       objects: [],
-      showGrid: true,
-      goToOrigin: false,
+      showGrid: false,
+      restartScale: false,
     }
   }
 
@@ -62,20 +62,12 @@ class App extends Component {
     })
   }
 
-  goToOriginButton(event) {
-    this.setState(() => {
-      return {
-        goToOrigin: true
-      }
-    })
+  restartScale(event) {
+    this.setState({restartScale: true})
   }
 
-  restartGoToOrigin() {
-    this.setState(() => {
-      return {
-        goToOrigin: false
-      }
-    })
+  restartScaleDone() {
+    this.setState({restartScale: false})
   }
 
   render() {
@@ -84,8 +76,8 @@ class App extends Component {
         <div className="multi-button">
           <button>Geometry noob version</button>
 
-          <button onClick={this.goToOriginButton.bind(this)} >
-            Go to origin
+          <button onClick={this.restartScale.bind(this)} >
+            Restart scale
           </button>
 
           <button onClick={this.showGridButton.bind(this)}>
@@ -103,8 +95,8 @@ class App extends Component {
 
           <Canvas objects={this.state.objects} 
                   showGrid={this.state.showGrid} 
-                  goToOrigin={this.state.goToOrigin} 
-                  restartGoToOrigin={this.restartGoToOrigin.bind(this)} />
+                  restartScale={this.state.restartScale} 
+                  restartScaleDone={this.restartScaleDone.bind(this)} />
         </div>
       </div>
     )

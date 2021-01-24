@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { drawGrid, drawPoint, drawLine, drawSegment, drawCircle, drawPolygon } from "./Geometry";
+import { drawText, drawGrid, drawPoint, drawLine, drawSegment, drawCircle, drawPolygon } from "./Geometry";
 import "./styles.css"
 
 class Canvas extends Component {
@@ -16,28 +16,31 @@ class Canvas extends Component {
       marginTop: 0,
     }
 
-    this.restartGoToOrigin = this.restartGoToOrigin.bind(this)
+    this.restartScale = this.restartScale.bind(this)
   }
 
-  restartGoToOrigin() {
+  restartScale() {
     console.log("Restart go to origin Canvas")
-    
+
+    this.setState(() => {
+      return {
+        scale: 10,
+        dragging: false,
+        x: 0,
+        y: 0,
+      }
+    })
   }
 
   prepareCanvas() {
     const canvas = this.canvasRef.current
     const ctx = canvas.getContext('2d')
 
-    if (this.props.goToOrigin) {
-      this.restartGoToOrigin()
-      this.props.restartGoToOrigin()
-    }
-
-    ctx.clearRect(-this.state.marginLeft, -this.state.marginTop, canvas.width, canvas.height);
+    ctx.clearRect(-this.state.marginLeft, -this.state.marginTop, canvas.width, canvas.height)
 
     ctx.fillStyle = 'white'
     ctx.fillRect(-this.state.marginLeft, -this.state.marginTop, canvas.width, canvas.height)
-    ctx.rect(-this.state.marginLeft, -this.state.marginTop, canvas.width, canvas.height);
+    ctx.rect(-this.state.marginLeft, -this.state.marginTop, canvas.width, canvas.height)
 
     if (this.props.showGrid) {
       ctx.fillStyle = drawGrid({deltaX: 10, deltaY: 10, color: '#606060', scale: this.state.scale})
@@ -63,29 +66,35 @@ class Canvas extends Component {
       const type = object[0]
       const objectToDraw = {ctx, canvas, obj: object, scale: this.state.scale}
 
+      if (type.length > 1 && !type.endsWith("poly")) {
+        // A text object
+        drawText(objectToDraw)
+        continue
+      }
+
       switch (type[0]) {
         case 'p':
           if (type.endsWith("poly"))  
             drawPolygon(objectToDraw)
           else 
             drawPoint(objectToDraw)
-          break;
+          break
 
         case 'l':
           drawLine(objectToDraw)
-          break;
+          break
 
         case 's':
           drawSegment(objectToDraw)
-          break;
+          break
 
         case 'c':
           drawCircle(objectToDraw)
-          break;
+          break
 
         default:
           console.log("wtf bro!!")
-          break;
+          break
       }
     }
 
@@ -97,6 +106,10 @@ class Canvas extends Component {
   }
 
   componentDidUpdate() {
+    if (this.props.restartScale) {
+      this.restartScale()
+      this.props.restartScaleDone()
+    }
     this.prepareCanvas()
     this.drawObjects()
   }
@@ -105,7 +118,7 @@ class Canvas extends Component {
     const deltaScale = 0.01
 
     this.setState((prevState) => {
-      let newScale = prevState.scale + event.deltaY * -deltaScale;
+      let newScale = prevState.scale + event.deltaY * -deltaScale
       newScale = Math.min(500, Math.max(1, newScale))
 
       return {
@@ -135,7 +148,7 @@ class Canvas extends Component {
 
         curState.marginLeft += deltaX
         curState.marginTop += deltaY
-        ctx.translate(deltaX, deltaY);
+        ctx.translate(deltaX, deltaY)
 
         curState.x = event.clientX
         curState.y = event.clientY
@@ -157,13 +170,13 @@ class Canvas extends Component {
 
   render() {
     return (
-        <canvas width="600" height="600" 
-                className="image" 
-                ref={this.canvasRef} 
-                onWheel={this.zoomInOut.bind(this)} 
-                onMouseDown={this.onMouseDown.bind(this)} 
-                onMouseMove={this.onMouseMove.bind(this)} 
-                onMouseUp={this.onMouseUp.bind(this)} />
+          <canvas width="1000" height="800" 
+                  className="image" 
+                  ref={this.canvasRef} 
+                  onWheel={this.zoomInOut.bind(this)} 
+                  onMouseDown={this.onMouseDown.bind(this)} 
+                  onMouseMove={this.onMouseMove.bind(this)} 
+                  onMouseUp={this.onMouseUp.bind(this)} />
     )
   }  
 }

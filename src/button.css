@@ -18,7 +18,7 @@
 
 .multi-button {
   display: flex;
-  width: 100%;
+  width: 85%;
   place-items: center;
   padding: calc(var(--space));
   /* box-shadow: var(--shadow) 4px 4px; */
