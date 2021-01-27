@@ -128,16 +128,18 @@ export function drawLine(props) {
     }
   } 
 
-  const dirx = x2 - x1
-  const diry = y2 - y1
+  const inf = 100000
+  const k = Math.hypot(x2 - x1, y2 - y1)
+  const dirx = (x2 - x1) / k
+  const diry = (y2 - y1) / k
 
   ctx.strokeStyle = color;
   ctx.beginPath();
   ctx.lineWidth = Math.max(Smallest, Math.min(Biggest, scale * LineWidth)) / 2
   ctx.moveTo(x1, y1);
-  ctx.lineTo(x1 + dirx * canvas.width, y1 + diry * canvas.height);
+  ctx.lineTo(x1 + dirx * inf, y1 + diry * inf);
   ctx.moveTo(x1, y1);
-  ctx.lineTo(x1 - dirx * canvas.width, y1 - diry * canvas.height);
+  ctx.lineTo(x1 - dirx * inf, y1 - diry * inf);
   ctx.stroke()
 
   drawTextAt({ ctx, canvas, text, x: (x1 + x2) / 2, y: (y1 + y2) / 2, scale, color })
