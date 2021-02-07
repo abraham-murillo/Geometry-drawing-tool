@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { drawText, drawGrid, drawPoint, drawLine, drawSegment, drawCircle, drawPolygon } from "./Geometry";
+import { isNumeric } from "./Stuff";
 import "./styles.css"
 
 class Canvas extends Component {
@@ -60,6 +61,27 @@ class Canvas extends Component {
     for (let i = 0; i < objects.length; i++) {
       const object = objects[i]
 
+      // Use "some" intelligence to know what's going on
+      if (isNumeric(object[0])) {   
+        if (object.length >= 2 && isNumeric(object[1])) {
+          if (object.length >= 3 && isNumeric(object[2])) {
+            if (object.length >= 3 && isNumeric(object[3])) {
+              // 4 numeric values, so for me it is a 'poly' of 2 sides :D
+              object.unshift('poly')
+            } else {
+              // 3 numeric values, so for me it is a circle
+              object.unshift('c')
+            }
+          } else {
+            // 2 numeric values, so for me it is a point
+            object.unshift('p')
+          }
+        } else {
+          // idk what is this
+        }
+      }
+
+      // They especify the type
       if (object.length < 3)
         continue // not ready yet 
 

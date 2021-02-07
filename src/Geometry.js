@@ -1,18 +1,8 @@
+import {isNumeric, isColor} from "./Stuff";
+
 const LineWidth = 0.2
 const Smallest = 3
-const Biggest = 4
-
-function isNumeric(num) {
-  return !isNaN(num)
-}
-
-function isColor(x){
-  let s = new Option().style
-  s.color = x
-  let test1 = s.color == x
-  let test2 = /^#[0-9A-F]{6}$/i.test(x)
-  return (test1 == true || test2 == true)
-}
+const Biggest = 5
 
 function getX(props) {
   const { x, canvas, scale } = props
