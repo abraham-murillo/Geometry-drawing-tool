@@ -9,11 +9,11 @@ class Canvas extends Component {
     this.canvasRef = React.createRef()
 
     this.state = {
-      scale: 10,
+      scale: 20,
       dragging: false,
       x: 0,
       y: 0,
-      marginLeft: 0, 
+      marginLeft: 0,
       marginTop: 0,
     }
 
@@ -25,7 +25,7 @@ class Canvas extends Component {
 
     this.setState(() => {
       return {
-        scale: 10,
+        scale: 20,
         dragging: false,
         x: 0,
         y: 0,
@@ -39,16 +39,16 @@ class Canvas extends Component {
 
     ctx.clearRect(-this.state.marginLeft, -this.state.marginTop, canvas.width, canvas.height)
 
-    ctx.fillStyle = 'white'
+    ctx.fillStyle = '#f6f6fc'
     ctx.fillRect(-this.state.marginLeft, -this.state.marginTop, canvas.width, canvas.height)
     ctx.rect(-this.state.marginLeft, -this.state.marginTop, canvas.width, canvas.height)
 
     if (this.props.showGrid) {
-      ctx.fillStyle = drawGrid({deltaX: 10, deltaY: 10, color: '#606060', scale: this.state.scale})
-      ctx.fill()
+      // ctx.fillStyle = drawGrid({ deltaX: this.state.scale, deltaY: this.state.scale, color: '#606060', scale: 100 })
+      // ctx.fill()
 
-      ctx.fillStyle = drawGrid({deltaX: 100, deltaY: 100, color: 'black', scale: this.state.scale})
-      ctx.fill()
+      // ctx.fillStyle = drawGrid({deltaX: 1000, deltaY: 1000, color: 'black', scale: this.state.scale})
+      // ctx.fill()
     }
   }
 
@@ -62,7 +62,7 @@ class Canvas extends Component {
       const object = objects[i]
 
       // Use "some" intelligence to know what's going on
-      if (isNumeric(object[0])) {   
+      if (isNumeric(object[0])) {
         if (object.length >= 2 && isNumeric(object[1])) {
           if (object.length >= 3 && isNumeric(object[2])) {
             if (object.length >= 3 && isNumeric(object[3])) {
@@ -86,7 +86,7 @@ class Canvas extends Component {
         continue // not ready yet 
 
       const type = object[0]
-      const objectToDraw = {ctx, canvas, obj: object, scale: this.state.scale}
+      const objectToDraw = { ctx, canvas, obj: object, scale: this.state.scale }
 
       if (type.length > 1 && !type.endsWith("poly")) {
         // A text object
@@ -96,9 +96,9 @@ class Canvas extends Component {
 
       switch (type[0]) {
         case 'p':
-          if (type.endsWith("poly"))  
+          if (type.endsWith("poly"))
             drawPolygon(objectToDraw)
-          else 
+          else
             drawPoint(objectToDraw)
           break
 
@@ -163,7 +163,7 @@ class Canvas extends Component {
 
     this.setState((prevState) => {
       let curState = prevState
-      
+
       if (curState.dragging) {
         let deltaX = event.clientX - prevState.x
         let deltaY = event.clientY - prevState.y
@@ -190,17 +190,21 @@ class Canvas extends Component {
     })
   }
 
+
   render() {
     return (
-          <canvas width="1000" height="800" 
-                  className="image" 
-                  ref={this.canvasRef} 
-                  onWheel={this.zoomInOut.bind(this)} 
-                  onMouseDown={this.onMouseDown.bind(this)} 
-                  onMouseMove={this.onMouseMove.bind(this)} 
-                  onMouseUp={this.onMouseUp.bind(this)} />
+      <>
+        <canvas
+          width="1000" height="800"
+          className="image"
+          ref={this.canvasRef}
+          onWheel={this.zoomInOut.bind(this)}
+          onMouseDown={this.onMouseDown.bind(this)}
+          onMouseMove={this.onMouseMove.bind(this)}
+          onMouseUp={this.onMouseUp.bind(this)} />
+      </>
     )
-  }  
+  }
 }
 
 export default Canvas

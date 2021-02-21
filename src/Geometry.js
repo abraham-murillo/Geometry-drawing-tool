@@ -1,7 +1,7 @@
-import {isNumeric, isColor} from "./Stuff";
+import {isNumeric, isColor, lightenColor} from "./Stuff";
 
-const LineWidth = 0.2
-const Smallest = 3
+const LineWidth = 0.4
+const Smallest = 4
 const Biggest = 5
 
 function getX(props) {
@@ -23,7 +23,7 @@ export function drawGrid(props) {
 
   canvas.width = deltaX
   canvas.height = deltaY
-  ctx.fillStyle = 'white'
+  // ctx.fillStyle = 'white'
 
   ctx.strokeStyle = color
   ctx.moveTo(0, 0);
@@ -39,11 +39,11 @@ export function drawGrid(props) {
 function drawTextAt(props) {
   const { ctx, canvas, text, x, y, scale, color } = props
 
-  let fontSize = Math.min(20, Math.max(10, scale))
+  let fontSize = Math.min(20, Math.max(18, scale))
 
   ctx.font = fontSize + "px Comic Sans MS";
   ctx.fillStyle = color;
-  ctx.fillText(text, x + 5, y + 5);
+  ctx.fillText(text, x + 10, y + 10);
 }
 
 export function drawText(props) { 
@@ -82,10 +82,10 @@ export function drawPoint(props) {
     }
   } 
   
-  ctx.fillStyle = color;
+  ctx.fillStyle = lightenColor(color);
   ctx.strokeStyle = 'black';
   ctx.beginPath()
-  const r = Math.max(Smallest, Math.min(Biggest, scale * LineWidth))
+  const r = Math.max(Smallest, Math.min(Biggest, scale * LineWidth)) * 1.3
   ctx.arc(x, y, r, 0, 2 * Math.PI)
   ctx.fill()
   
@@ -123,9 +123,9 @@ export function drawLine(props) {
   const dirx = (x2 - x1) / k
   const diry = (y2 - y1) / k
 
-  ctx.strokeStyle = color;
+  ctx.strokeStyle = lightenColor(color);
   ctx.beginPath();
-  ctx.lineWidth = Math.max(Smallest, Math.min(Biggest, scale * LineWidth)) / 2
+  ctx.lineWidth = Math.max(Smallest, Math.min(Biggest, scale * LineWidth))
   ctx.moveTo(x1, y1);
   ctx.lineTo(x1 + dirx * inf, y1 + diry * inf);
   ctx.moveTo(x1, y1);
@@ -159,9 +159,9 @@ export function drawSegment(props) {
     }
   } 
 
-  ctx.strokeStyle = color;
+  ctx.strokeStyle = lightenColor(color);
   ctx.beginPath();
-  ctx.lineWidth = Math.max(Smallest, Math.min(Biggest, scale * LineWidth)) / 2
+  ctx.lineWidth = Math.max(Smallest, Math.min(Biggest, scale * LineWidth))
   ctx.moveTo(x1, y1);
   ctx.lineTo(x2, y2);
   ctx.stroke()
@@ -194,7 +194,7 @@ export function drawCircle(props) {
     }
   }
 
-  ctx.strokeStyle = color;
+  ctx.strokeStyle = lightenColor(color);
   ctx.beginPath()
   ctx.lineWidth = Math.max(Smallest, Math.min(Biggest, scale * LineWidth))
   ctx.arc(x, y, r, 0, 2 * Math.PI)
@@ -236,8 +236,8 @@ export function drawPolygon(props) {
     }
   }
 
-  ctx.strokeStyle = color;
-  ctx.lineWidth = Math.max(Smallest, Math.min(Biggest, scale * LineWidth)) / 2
+  ctx.strokeStyle = lightenColor(color);
+  ctx.lineWidth = Math.max(Smallest, Math.min(Biggest, scale * LineWidth))
   for (let i = 0; i < poly.length; i++) {
     ctx.fillStyle = color;
     ctx.beginPath()

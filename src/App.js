@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM from "react-dom"
 
 import Canvas from "./Canvas";
-import {divideByTokens, isSpace} from "./Stuff";
+import { divideByTokens, isSpace } from "./Stuff";
 import "./styles.css"
 import "./button.css"
 
@@ -23,13 +23,13 @@ class App extends Component {
 
       const newObjects = text.split('\n').map((line) => {
         function isGood(c) {
-          if ('0' <= c && c <= '9') 
+          if ('0' <= c && c <= '9')
             return true;
-          if ('a' <= c && c <= 'z') 
+          if ('a' <= c && c <= 'z')
             return true;
-          if ('A' <= c && c <= 'Z') 
+          if ('A' <= c && c <= 'Z')
             return true;
-          if (isSpace(c)) 
+          if (isSpace(c))
             return true
           return c == '.' || c == '-' || c == '+' || c == '#'
         }
@@ -38,7 +38,7 @@ class App extends Component {
         for (const c of line)
           if (isGood(c))
             cleanLine += c
-        
+
         const properties = divideByTokens(cleanLine)
         console.log(properties)
 
@@ -53,18 +53,18 @@ class App extends Component {
 
   showGridButton(event) {
     this.setState((prevState) => {
-      return { 
-        showGrid: !prevState.showGrid 
+      return {
+        showGrid: !prevState.showGrid
       }
     })
   }
 
   restartScale(event) {
-    this.setState({restartScale: true})
+    this.setState({ restartScale: true })
   }
 
   restartScaleDone() {
-    this.setState({restartScale: false})
+    this.setState({ restartScale: false })
   }
 
   render() {
@@ -87,13 +87,14 @@ class App extends Component {
             type="text"
             className="input"
             onChange={this.getInput.bind(this)}
-            >
+          >
           </textarea>
 
-          <Canvas objects={this.state.objects} 
-                  showGrid={this.state.showGrid} 
-                  restartScale={this.state.restartScale} 
-                  restartScaleDone={this.restartScaleDone.bind(this)} />
+          <Canvas 
+            objects={this.state.objects}
+            showGrid={this.state.showGrid}
+            restartScale={this.state.restartScale}
+            restartScaleDone={this.restartScaleDone.bind(this)} />
         </div>
       </div>
     )
