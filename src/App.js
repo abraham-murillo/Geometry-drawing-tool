@@ -68,11 +68,25 @@ class App extends Component {
   }
 
   render() {
+    const text = 
+    "  Geometry noob\n" +
+    "[opt] means optional\n\n" +
+    "Point:\n" +
+    "[p] x y [color] [label]\n\n" +
+    "Segment:\n" +
+    "[s] x1 y1 x2 y2 [color] [label]\n\n" +
+    "Line:\n" +
+    "l x1 y1 x2 y2 [color] [label]\n\n" +
+    "Circle:\n" +
+    "[c] x y r [color] [label]\n\n" +
+    "Polygon:\n" +
+    "[poly] x1 y1 x2 y2 ... xn yn [color] [label]\n\n" +
+    "Text:\n" +
+    "text x y [color]\n\n"
+
     return (
       <div>
         <div className="multi-button">
-          <button>Geometry noob version</button>
-
           <button onClick={this.restartScale.bind(this)} >
             Restart scale
           </button>
@@ -87,8 +101,7 @@ class App extends Component {
             type="text"
             className="input"
             onChange={this.getInput.bind(this)}
-          >
-          </textarea>
+            placeholder={text} />
 
           <Canvas 
             objects={this.state.objects}

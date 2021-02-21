@@ -1,5 +1,5 @@
 body {
-  background-color: #f6f6fc
+  background-color: #f6f6fc;
 }
 
 .App {
@@ -9,11 +9,11 @@ body {
 .input {
   position: static;
   /* display: block; */
-  padding: 0;
-  width: 20vw;
+  padding: .5em;
+  width: 22vw;
   height: 48vw;
   margin: 0vw 2vw;
-  font-size: x-large;
+  font-size: large;
   background-color: white;
   border:black 1px solid;
 }
@@ -24,7 +24,7 @@ body {
   padding: 0;
   width: 70vw;
   height: 48vw;
-  margin: 0vw 2vw;
+  /* margin: 0vw 2vw; */
   border:black 1px solid;
 }
 
