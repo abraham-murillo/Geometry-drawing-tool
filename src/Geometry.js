@@ -229,7 +229,7 @@ export function drawPolygon(props) {
   if (2 * poly.length + 1 < obj.length) {
     if (isColor(obj[2 * poly.length + 1])) {
       color = obj[2 * poly.length + 1]  // for sure its the color
-      if (obj.length - 1 != 2 * poly.length + 1) 
+      if (obj.length - 1 !== 2 * poly.length + 1) 
         text = obj[obj.length - 1] // text to write if isn't the color
     } else {
       text = obj[2 * poly.length + 1] // is it text?

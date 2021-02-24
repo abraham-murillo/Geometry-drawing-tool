@@ -5,13 +5,13 @@ export function isNumeric(num) {
 export function isColor(x){
   let s = new Option().style
   s.color = x
-  let test1 = s.color == x
+  let test1 = s.color === x
   let test2 = /^#[0-9A-F]{6}$/i.test(x)
-  return (test1 == true || test2 == true)
+  return (test1 === true || test2 === true)
 }
 
 export function isSpace(c) {
-  return (c == ' ') || (c == '\t');
+  return (c === ' ') || (c === '\t');
 }
 
 export function divideByTokens(str) {
@@ -20,7 +20,7 @@ export function divideByTokens(str) {
   for (var i in str) {
     var c = str[i];
     if (isSpace(c)) {
-      if (last != "") {
+      if (last !== "") {
         result.push(last);
       }
       last = "";
@@ -28,7 +28,7 @@ export function divideByTokens(str) {
       last += c;
     }
   }
-  if (last != "") {
+  if (last !== "") {
     result.push(last);
   }
   return result;
@@ -47,7 +47,7 @@ function getRGB(v) {
 }
 
 function parseColor(color) {
-  var arr=[]; 
+  var arr = []; 
   color.replace(/[\d+\.]+/g, function(v) { 
     arr.push(parseFloat(v));
   });
@@ -56,15 +56,15 @@ function parseColor(color) {
 
 function toHex(int) {
   var hex = int.toString(16);
-  return hex.length == 1 ? "0" + hex : hex;
+  return hex.length === 1 ? "0" + hex : hex;
 }
 
 export function lightenColor(col, amt = 40) {
-  if (col.charAt(0) != '#') {
+  if (col.charAt(0) !== '#') {
     col = parseColor(getRGB(col));
   }
   
-  var cur = col.charAt(0) == '#' ? col.substring(1, 7) : col;
+  var cur = col.charAt(0) === '#' ? col.substring(1, 7) : col;
   
   var r = Math.max(Math.min(255, parseInt(cur.substring(0, 2), 16) + amt), 0).toString(16)
   var g = Math.max(Math.min(255, parseInt(cur.substring(2, 4), 16) + amt), 0).toString(16)

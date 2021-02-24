@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import ReactDOM from "react-dom"
 
 import Canvas from "./Canvas";
 import { divideByTokens, isSpace } from "./Stuff";
@@ -14,6 +13,7 @@ class App extends Component {
       objects: [],
       showGrid: false,
       restartScale: false,
+      goToOrigin: false
     }
   }
 
@@ -31,7 +31,7 @@ class App extends Component {
             return true;
           if (isSpace(c))
             return true
-          return c == '.' || c == '-' || c == '+' || c == '#'
+          return c === '.' || c === '-' || c === '+' || c === '#'
         }
 
         var cleanLine = ""
@@ -40,7 +40,7 @@ class App extends Component {
             cleanLine += c
 
         const properties = divideByTokens(cleanLine)
-        console.log(properties)
+        // console.log(properties)
 
         return properties
       })
@@ -59,7 +59,15 @@ class App extends Component {
     })
   }
 
-  restartScale(event) {
+  goToOriginButton(event) {
+    this.setState((prevState) => {
+      return {
+        goToOrigin: !prevState.goToOrigin
+      }
+    })
+  }
+
+  restartScaleButton(event) {
     this.setState({ restartScale: true })
   }
 
@@ -87,7 +95,11 @@ class App extends Component {
     return (
       <div>
         <div className="multi-button">
-          <button onClick={this.restartScale.bind(this)} >
+          <button onClick={this.goToOriginButton.bind(this)} >
+            Go to origin
+          </button>
+
+          <button onClick={this.restartScaleButton.bind(this)} >
             Restart scale
           </button>
 
@@ -105,6 +117,7 @@ class App extends Component {
 
           <Canvas 
             objects={this.state.objects}
+            goToOrigin={this.state.goToOrigin}
             showGrid={this.state.showGrid}
             restartScale={this.state.restartScale}
             restartScaleDone={this.restartScaleDone.bind(this)} />

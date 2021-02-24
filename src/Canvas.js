@@ -192,6 +192,8 @@ class Canvas extends Component {
 
 
   render() {
+    console.log(this.props);
+
     return (
       <>
         <canvas
