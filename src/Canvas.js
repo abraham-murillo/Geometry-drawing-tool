@@ -21,14 +21,26 @@ class Canvas extends Component {
   }
 
   restartScale() {
-    console.log("Restart go to origin Canvas")
-
     this.setState(() => {
       return {
         scale: 20,
         dragging: false,
         x: 0,
         y: 0,
+      }
+    })
+  }
+
+  goToOrigin() {
+    this.canvasRef = React.createRef()
+    this.setState(() => {
+      return {
+        scale: 20,
+        dragging: false,
+        x: 0,
+        y: 0,
+        marginLeft: 0,
+        marginTop: 0,
       }
     })
   }
@@ -145,6 +157,10 @@ class Canvas extends Component {
       this.restartScale()
       this.props.restartScaleDone()
     }
+    if (this.props.goToOrigin) {
+      this.goToOrigin()
+      this.props.goToOriginDone()
+    }
     this.prepareCanvas()
     this.drawObjects()
   }
@@ -202,7 +218,6 @@ class Canvas extends Component {
       }
     })
   }
-
 
   render() {
     console.log(this.props);
