@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { drawText, drawGrid, drawPoint, drawLine, drawSegment, drawCircle, drawPolygon } from "./Geometry";
-import { isNumeric } from "./Stuff";
+import { isNumeric, isColor } from "./Stuff";
 import "./styles.css"
 
 class Canvas extends Component {
@@ -58,8 +58,15 @@ class Canvas extends Component {
 
     // Draws all objects again
     const objects = this.props.objects
+    let currentColor = "black"
+
     for (let i = 0; i < objects.length; i++) {
       const object = objects[i]
+
+      if (isColor(object[0])) {
+        currentColor = object[0]
+        continue
+      }
 
       // Use "some" intelligence to know what's going on
       if (isNumeric(object[0])) {
@@ -86,7 +93,13 @@ class Canvas extends Component {
         continue // not ready yet 
 
       const type = object[0]
-      const objectToDraw = { ctx, canvas, obj: object, scale: this.state.scale }
+      const objectToDraw = { 
+        ctx: ctx, 
+        canvas: canvas, 
+        obj: object, 
+        scale: this.state.scale, 
+        defaultColor: currentColor
+      }
 
       if (type.length > 1 && !type.endsWith("poly")) {
         // A text object

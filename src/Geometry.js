@@ -48,21 +48,18 @@ function drawTextAt(props) {
 
 export function drawText(props) { 
   // Lets see how useful you are
-  const { ctx, canvas, obj, scale } = props
+  const { ctx, canvas, obj, scale, defaultColor } = props
 
   const text = " " + obj[0] + " "
   const x = getX({ x: obj[1], canvas, scale })
   const y = getY({ y: obj[2], canvas, scale })
-  const color = obj.length >= 4 ? obj[3] : 'black'
+  const color = obj.length >= 4 ? obj[3] : defaultColor
 
   drawTextAt({ ctx, canvas, text, x, y, scale, color })
 }
 
 export function drawPoint(props) {
-  // point x y color
-  // point x y text
-  // point x y color text
-  const { ctx, canvas, obj, scale } = props
+  const { ctx, canvas, obj, scale, defaultColor } = props
 
   if (obj.length < 3)
     return
@@ -70,7 +67,7 @@ export function drawPoint(props) {
   const x = getX({ x: obj[1], canvas, scale })
   const y = getY({ y: obj[2], canvas, scale })
 
-  let color = 'black'
+  let color = defaultColor
   let text = ""
   if (obj.length >= 4) {
     if (isColor(obj[3])) {
@@ -93,10 +90,7 @@ export function drawPoint(props) {
 }
 
 export function drawLine(props) {
-  // line x1 y1 x2 y2 color
-  // line x1 y1 x2 y2 text
-  // line x1 y1 x2 y2 color text
-  const { ctx, canvas, obj, scale } = props
+  const { ctx, canvas, obj, scale, defaultColor } = props
 
   if (obj.length < 5)
     return
@@ -106,7 +100,7 @@ export function drawLine(props) {
   const x2 = getX({ x: obj[3], canvas, scale })
   const y2 = getY({ y: obj[4], canvas, scale })
 
-  let color = 'black'
+  let color = defaultColor
   let text = ""
   if (obj.length >= 6) {
     if (isColor(obj[5])) {
@@ -136,8 +130,7 @@ export function drawLine(props) {
 }
 
 export function drawSegment(props) {
-  // seg x1 y1 x2 y2 color
-  const { ctx, canvas, obj, scale } = props
+  const { ctx, canvas, obj, scale, defaultColor } = props
 
   if (obj.length < 5)
     return
@@ -147,7 +140,7 @@ export function drawSegment(props) {
   const x2 = getX({ x: obj[3], canvas, scale })
   const y2 = getY({ y: obj[4], canvas, scale })
   
-  let color = 'black'
+  let color = defaultColor
   let text = ""
   if (obj.length >= 6) {
     if (isColor(obj[5])) {
@@ -170,10 +163,7 @@ export function drawSegment(props) {
 }
 
 export function drawCircle(props) {
-  // circle x y radio color
-  // circle x y radio text
-  // circle x y radio color text
-  const { ctx, canvas, obj, scale } = props
+  const { ctx, canvas, obj, scale, defaultColor } = props
 
   if (obj.length < 4)
     return
@@ -182,7 +172,7 @@ export function drawCircle(props) {
   const y = getY({ y: obj[2], canvas, scale })
   const r = scale * parseFloat(obj[3])
 
-  let color = 'black'
+  let color = defaultColor
   let text = ""
   if (obj.length >= 5) {
     if (isColor(obj[4])) {
@@ -204,10 +194,7 @@ export function drawCircle(props) {
 }
 
 export function drawPolygon(props) {
-  // poly x1 y1 x2 y2 ... xn yn color 
-  // poly x1 y1 x2 y2 ... xn yn text
-  // poly x1 y1 x2 y2 ... xn yn color text
-  const { ctx, canvas, obj, scale } = props
+  const { ctx, canvas, obj, scale, defaultColor } = props
 
   if (obj.length < 5)
     return
@@ -224,7 +211,7 @@ export function drawPolygon(props) {
         rightMost = { x: x, y: y }
     }
 
-  let color = 'black'
+  let color = defaultColor
   let text = ""
   if (2 * poly.length + 1 < obj.length) {
     if (isColor(obj[2 * poly.length + 1])) {

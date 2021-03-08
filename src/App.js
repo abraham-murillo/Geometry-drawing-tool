@@ -67,12 +67,16 @@ class App extends Component {
     })
   }
 
-  restartScaleButton(event) {
+  restartScaleButton() {
     this.setState({ restartScale: true })
   }
 
   restartScaleDone() {
     this.setState({ restartScale: false })
+  }
+
+  goToOriginDone() {
+    this.setState({ goToOrigin: false })
   }
 
   render() {
@@ -90,7 +94,9 @@ class App extends Component {
     "Polygon:\n" +
     "[poly] x1 y1 x2 y2 ... xn yn [color] [label]\n\n" +
     "Text:\n" +
-    "text x y [color]\n\n"
+    "text x y [color]\n\n" +
+    "Bonus:\n" +
+    "[color]\nChanges all objects below with this color\n\n"
 
     return (
       <div>
@@ -118,6 +124,7 @@ class App extends Component {
           <Canvas 
             objects={this.state.objects}
             goToOrigin={this.state.goToOrigin}
+            goToOriginDone={this.goToOriginDone.bind(this)}
             showGrid={this.state.showGrid}
             restartScale={this.state.restartScale}
             restartScaleDone={this.restartScaleDone.bind(this)} />
