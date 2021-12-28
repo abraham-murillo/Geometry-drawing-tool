@@ -5,34 +5,34 @@ const LineWidth = 0.4
 const Smallest = 4
 const Biggest = 5
 
-// export function drawGrid(deltaX, deltaY, color, scale) {
-//   // This don't scale itself :c
+export function drawGrid(width, height, color, scale) {
+  // This don't scale itself :c
 
-//   const canvas = document.createElement("canvas")
-//   const ctx = canvas.getContext('2d')
+  const canvas = document.createElement("canvas")
+  const ctx = canvas.getContext('2d')
 
-//   canvas.width = deltaX
-//   canvas.height = deltaY
-//   // ctx.fillStyle = 'white'
+  canvas.width = scale * parseFloat(width)
+  canvas.height = scale * parseFloat(height)
+  // ctx.fillStyle = 'white'
 
-//   ctx.strokeStyle = color
-//   ctx.moveTo(0, 0);
-//   ctx.lineTo(deltaX * scale, 0)
-//   ctx.stroke()
+  ctx.strokeStyle = color
+  ctx.moveTo(0, 0);
+  ctx.lineTo(canvas.width, 0)
+  ctx.stroke()
 
-//   ctx.moveTo(0, 0)
-//   ctx.lineTo(0, deltaY * scale)
-//   ctx.stroke()
-//   return ctx.createPattern(canvas, 'repeat')
-// }
+  ctx.moveTo(0, 0)
+  ctx.lineTo(0, canvas.height)
+  ctx.stroke()
+  return ctx.createPattern(canvas, 'repeat')
+}
 
 export function drawAllObjects(ctx, canvas, objects) {
   function getX(x, scale) {
-    return scale * parseFloat(x) + canvas.width / 2
+    return scale * parseFloat(x)
   }
 
   function getY(y, scale) {
-    return -scale * parseFloat(y) + canvas.height / 2
+    return -scale * parseFloat(y)
   }
 
   function drawTextAt(x, y, text, scale, color) {

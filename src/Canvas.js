@@ -25,27 +25,13 @@ class Canvas extends Component {
       return {
         scale: 20,
         dragging: false,
-        x: 0,
-        y: 0,
       }
     })
   }
 
-  goToOrigin() {
-    this.canvasRef = React.createRef()
-    this.setState(() => {
-      return {
-        scale: 20,
-        dragging: false,
-        x: 0,
-        y: 0,
-        marginLeft: 0,
-        marginTop: 0,
-      }
-    })
-  }
+  goToOrigin() { }
 
-  prepareCanvas() {
+  prepareCanvas(first) {
     const canvas = this.canvasRef.current
     const ctx = canvas.getContext('2d')
 
@@ -56,10 +42,10 @@ class Canvas extends Component {
     ctx.rect(-this.state.marginLeft, -this.state.marginTop, canvas.width, canvas.height)
 
     if (this.props.showGrid) {
-      // ctx.fillStyle = drawGrid(this.state.scale, this.state.scale, '#606060', 100)
-      // ctx.fill()
+      ctx.fillStyle = drawGrid(10, 10, '#606060', this.state.scale)
+      ctx.fill()
 
-      // ctx.fillStyle = drawGrid(1000, 1000, 'black', this.state.scale)
+      // ctx.fillStyle = drawGrid(100, 100, 'black', this.state.scale)
       // ctx.fill()
     }
   }
@@ -161,13 +147,11 @@ class Canvas extends Component {
     objects = this.assignObjectsType(objects)
     objects = this.setAsObjects(objects)
 
-    console.log(objects)
-
     drawAllObjects(ctx, canvas, objects)
   }
 
   componentDidMount() {
-    this.prepareCanvas()
+    this.prepareCanvas(true)
   }
 
   componentDidUpdate() {
@@ -179,7 +163,7 @@ class Canvas extends Component {
       this.goToOrigin()
       this.props.goToOriginDone()
     }
-    this.prepareCanvas()
+    this.prepareCanvas(false)
     this.drawObjects()
   }
 
