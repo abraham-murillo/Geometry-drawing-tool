@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { drawText, drawGrid, drawPoint, drawLine, drawSegment, drawCircle, drawPolygon } from "./Geometry";
+import { drawGrid, drawAllObjects } from "./Geometry";
 import { isNumeric, isColor } from "./Stuff";
 import "./styles.css"
 
@@ -56,12 +56,100 @@ class Canvas extends Component {
     ctx.rect(-this.state.marginLeft, -this.state.marginTop, canvas.width, canvas.height)
 
     if (this.props.showGrid) {
-      // ctx.fillStyle = drawGrid({ deltaX: this.state.scale, deltaY: this.state.scale, color: '#606060', scale: 100 })
+      // ctx.fillStyle = drawGrid(this.state.scale, this.state.scale, '#606060', 100)
       // ctx.fill()
 
-      // ctx.fillStyle = drawGrid({deltaX: 1000, deltaY: 1000, color: 'black', scale: this.state.scale})
+      // ctx.fillStyle = drawGrid(1000, 1000, 'black', this.state.scale)
       // ctx.fill()
     }
+  }
+
+  mergePolygonPoints(rawObjects) {
+    const objects = []
+    for (const cur of rawObjects) {
+      const prev = objects[objects.length - 1]
+
+      if (cur.length == 0) {
+        // next one is a new object
+        objects.push(cur)
+        continue
+      }
+
+      if (objects.length > 0 && prev.length > 0 && prev[0].startsWith("poly")) {
+        objects[objects.length - 1] = prev.concat(cur)
+      } else {
+        objects.push(cur)
+      }
+    }
+
+    return objects
+  }
+
+  assignObjectsType(rawObjects) {
+    // Use "some" intelligence to know what's going on
+    return rawObjects.map((cur) => {
+      if (cur.length && isNumeric(cur[0])) {
+        if (cur.length >= 2 && isNumeric(cur[1])) {
+          if (cur.length >= 3 && isNumeric(cur[2])) {
+            if (cur.length >= 4 && isNumeric(cur[3])) {
+              // 4 numeric values, so for me it is a 'poly' of 2 sides :D
+              cur.unshift('poly')
+            } else {
+              // 3 numeric values, so for me it is a circle
+              cur.unshift('circle')
+            }
+          } else {
+            // 2 numeric values, so for me it is a point
+            cur.unshift('point')
+          }
+        } else {
+          // idk what is this, just 1 value .-.
+        }
+      }
+
+      return cur
+    }).filter((cur) => {
+      return cur.length > 0
+    })
+  }
+
+  setAsObjects(rawObjects) {
+    const objects = []
+
+    let currentColor = "black"
+    for (const cur of rawObjects) {
+      if (isColor(cur[0])) {
+        currentColor = cur[0]
+        continue
+      }
+
+      if (cur.length < 3) {
+        // object not ready yet 
+        continue
+      }
+
+      const object = {
+        type: cur[0],
+        color: currentColor,
+        arr: [],
+        scale: this.state.scale,
+        text: "",
+      }
+
+      for (let i = 1; i < cur.length; i++) {
+        if (isColor(cur[i])) {
+          object.color = cur[i]
+        } else if (isNumeric(cur[i])) {
+          object.arr.push(cur[i])
+        } else {
+          object.text += " " + cur[i]
+        }
+      }
+
+      objects.push(object)
+    }
+
+    return objects
   }
 
   drawObjects() {
@@ -69,83 +157,13 @@ class Canvas extends Component {
     const ctx = canvas.getContext('2d')
 
     // Draws all objects again
-    const objects = this.props.objects
-    let currentColor = "black"
+    let objects = this.mergePolygonPoints(this.props.objects)
+    objects = this.assignObjectsType(objects)
+    objects = this.setAsObjects(objects)
 
-    for (let i = 0; i < objects.length; i++) {
-      const object = objects[i]
+    console.log(objects)
 
-      if (isColor(object[0])) {
-        currentColor = object[0]
-        continue
-      }
-
-      // Use "some" intelligence to know what's going on
-      if (isNumeric(object[0])) {
-        if (object.length >= 2 && isNumeric(object[1])) {
-          if (object.length >= 3 && isNumeric(object[2])) {
-            if (object.length >= 3 && isNumeric(object[3])) {
-              // 4 numeric values, so for me it is a 'poly' of 2 sides :D
-              object.unshift('poly')
-            } else {
-              // 3 numeric values, so for me it is a circle
-              object.unshift('c')
-            }
-          } else {
-            // 2 numeric values, so for me it is a point
-            object.unshift('p')
-          }
-        } else {
-          // idk what is this
-        }
-      }
-
-      // They especify the type
-      if (object.length < 3)
-        continue // not ready yet 
-
-      const type = object[0]
-      const objectToDraw = { 
-        ctx: ctx, 
-        canvas: canvas, 
-        obj: object, 
-        scale: this.state.scale, 
-        defaultColor: currentColor
-      }
-
-      if (type.length > 1 && !type.endsWith("poly")) {
-        // A text object
-        drawText(objectToDraw)
-        continue
-      }
-
-      switch (type[0]) {
-        case 'p':
-          if (type.endsWith("poly"))
-            drawPolygon(objectToDraw)
-          else
-            drawPoint(objectToDraw)
-          break
-
-        case 'l':
-          drawLine(objectToDraw)
-          break
-
-        case 's':
-          drawSegment(objectToDraw)
-          break
-
-        case 'c':
-          drawCircle(objectToDraw)
-          break
-
-        default:
-          console.log("wtf bro!!")
-          break
-      }
-    }
-
-    ctx.restore();
+    drawAllObjects(ctx, canvas, objects)
   }
 
   componentDidMount() {
@@ -179,11 +197,7 @@ class Canvas extends Component {
   }
 
   onMouseUp(event) {
-    this.setState(() => {
-      return {
-        dragging: false
-      }
-    })
+    this.setState({ dragging: false })
   }
 
   onMouseMove(event) {
@@ -210,29 +224,26 @@ class Canvas extends Component {
   }
 
   onMouseDown(event) {
-    this.setState(() => {
-      return {
-        dragging: true,
-        x: event.clientX,
-        y: event.clientY,
-      }
+    this.setState({
+      dragging: true,
+      x: event.clientX,
+      y: event.clientY,
     })
   }
 
   render() {
-    console.log(this.props);
+    // console.log(this.props);
 
     return (
-      <>
-        <canvas
-          width="1000" height="800"
-          className="image"
-          ref={this.canvasRef}
-          onWheel={this.zoomInOut.bind(this)}
-          onMouseDown={this.onMouseDown.bind(this)}
-          onMouseMove={this.onMouseMove.bind(this)}
-          onMouseUp={this.onMouseUp.bind(this)} />
-      </>
+      <canvas
+        width="1000" height="800"
+        className="image"
+        ref={this.canvasRef}
+        onWheel={this.zoomInOut.bind(this)}
+        onMouseDown={this.onMouseDown.bind(this)}
+        onMouseMove={this.onMouseMove.bind(this)}
+        onMouseUp={this.onMouseUp.bind(this)}
+      />
     )
   }
 }
