@@ -39,7 +39,10 @@ class App extends Component {
           if (isGood(c))
             cleanLine += c
 
-        return divideByTokens(cleanLine)
+        const properties = divideByTokens(cleanLine)
+        // console.log(properties)
+
+        return properties
       })
 
       return {
@@ -77,28 +80,30 @@ class App extends Component {
   }
 
   render() {
-    const text =
-      "  Geometry noob\n" +
-      "[opt] means optional\n\n" +
-      "Point:\n" +
-      "[p] x y [color] [label]\n\n" +
-      "Segment:\n" +
-      "[s] x1 y1 x2 y2 [color] [label]\n\n" +
-      "Line:\n" +
-      "l x1 y1 x2 y2 [color] [label]\n\n" +
-      "Circle:\n" +
-      "[c] x y r [color] [label]\n\n" +
-      "Polygon:\n" +
-      "[poly] x1 y1 x2 y2 ... xn yn [color] [label]\n\n" +
-      "Bonus:\n" +
-      "[color]\nChanges all objects below with this color\n\n"
+    const text = 
+    "  Geometry noob\n" +
+    "[opt] means optional\n\n" +
+    "Point:\n" +
+    "[p] x y [color] [label]\n\n" +
+    "Segment:\n" +
+    "[s] x1 y1 x2 y2 [color] [label]\n\n" +
+    "Line:\n" +
+    "l x1 y1 x2 y2 [color] [label]\n\n" +
+    "Circle:\n" +
+    "[c] x y r [color] [label]\n\n" +
+    "Polygon:\n" +
+    "[poly] x1 y1 x2 y2 ... xn yn [color] [label]\n\n" +
+    "Text:\n" +
+    "text x y [color]\n\n" +
+    "Bonus:\n" +
+    "[color]\nChanges all objects below with this color\n\n"
 
     return (
       <div>
         <div className="multi-button">
-          {/* <button onClick={this.goToOriginButton.bind(this)} >
+          <button onClick={this.goToOriginButton.bind(this)} >
             Go to origin
-          </button> */}
+          </button>
 
           <button onClick={this.restartScaleButton.bind(this)} >
             Restart scale
@@ -116,7 +121,7 @@ class App extends Component {
             onChange={this.getInput.bind(this)}
             placeholder={text} />
 
-          <Canvas
+          <Canvas 
             objects={this.state.objects}
             goToOrigin={this.state.goToOrigin}
             goToOriginDone={this.goToOriginDone.bind(this)}
