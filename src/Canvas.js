@@ -91,11 +91,11 @@ class Canvas extends Component {
               object.unshift('poly')
             } else {
               // 3 numeric values, so for me it is a circle
-              object.unshift('circle')
+              object.unshift('c')
             }
           } else {
             // 2 numeric values, so for me it is a point
-            object.unshift('point')
+            object.unshift('p')
           }
         } else {
           // idk what is this
