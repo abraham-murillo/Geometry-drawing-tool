@@ -72,11 +72,13 @@ class Canvas extends Component {
     const objects = this.props.objects
     let currentColor = "black"
 
-    for (let i = 0; i < objects.length; i++) {
-      const object = objects[i]
-
+    for (let object of objects) {
       if (isColor(object[0])) {
         currentColor = object[0]
+        continue
+      }
+
+      if (currentColor === "transparent") {
         continue
       }
 
@@ -89,11 +91,11 @@ class Canvas extends Component {
               object.unshift('poly')
             } else {
               // 3 numeric values, so for me it is a circle
-              object.unshift('c')
+              object.unshift('circle')
             }
           } else {
             // 2 numeric values, so for me it is a point
-            object.unshift('p')
+            object.unshift('point')
           }
         } else {
           // idk what is this
@@ -105,11 +107,11 @@ class Canvas extends Component {
         continue // not ready yet 
 
       const type = object[0]
-      const objectToDraw = { 
-        ctx: ctx, 
-        canvas: canvas, 
-        obj: object, 
-        scale: this.state.scale, 
+      const objectToDraw = {
+        ctx: ctx,
+        canvas: canvas,
+        obj: object,
+        scale: this.state.scale,
         defaultColor: currentColor
       }
 
@@ -220,7 +222,7 @@ class Canvas extends Component {
   }
 
   render() {
-    console.log(this.props);
+    console.log(this.props.objects);
 
     return (
       <>
