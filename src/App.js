@@ -93,13 +93,14 @@ class App extends Component {
       "Line:\n" +
       "l x1 y1 x2 y2 [color] [label]\n\n" +
       "Circle:\n" +
-      "[c] x y r [color] [label]\n\n" +
+      "[c] x y r [color] [label] [fill]\n\n" +
       "Polygon:\n" +
-      "[poly] x1 y1 x2 y2 ... xn yn [color] [label]\n\n" +
+      "[poly] x1 y1 x2 y2 ... xn yn [color] [label] [fill]\n\n" +
       "Rectangle:\n" +
-      "[rect] x1 y1 x2 y2 [color] [label]\n\n" +
+      "[rect] x1 y1 x2 y2 [color] [label] [fill]\n\n" +
       "Bonus:\n" +
-      "[color]\nChanges all objects below with this color\n\n"
+      "[color]\nChanges all objects below with this color\n\n" +
+      "[showVertices]\nShows circles at the vertices in all geometric shapes bellow\n\n"
 
     return (
       <div>
