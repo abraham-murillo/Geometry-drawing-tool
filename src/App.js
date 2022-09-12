@@ -36,8 +36,11 @@ class App extends Component {
 
         var cleanLine = ""
         for (const c of line)
-          if (isGood(c))
+          if (isGood(c)) {
             cleanLine += c
+          } else {
+            cleanLine += " ";
+          }
 
         const properties = divideByTokens(cleanLine)
         // console.log(properties)
@@ -80,23 +83,23 @@ class App extends Component {
   }
 
   render() {
-    const text = 
-    "  Geometry noob\n" +
-    "[opt] means optional\n\n" +
-    "Point:\n" +
-    "[p] x y [color] [label]\n\n" +
-    "Segment:\n" +
-    "[s] x1 y1 x2 y2 [color] [label]\n\n" +
-    "Line:\n" +
-    "l x1 y1 x2 y2 [color] [label]\n\n" +
-    "Circle:\n" +
-    "[c] x y r [color] [label]\n\n" +
-    "Polygon:\n" +
-    "[poly] x1 y1 x2 y2 ... xn yn [color] [label]\n\n" +
-    "Text:\n" +
-    "text x y [color]\n\n" +
-    "Bonus:\n" +
-    "[color]\nChanges all objects below with this color\n\n"
+    const text =
+      "  Geometry noob\n" +
+      "[opt] means optional\n\n" +
+      "Point:\n" +
+      "[p] x y [color] [label]\n\n" +
+      "Segment:\n" +
+      "[s] x1 y1 x2 y2 [color] [label]\n\n" +
+      "Line:\n" +
+      "l x1 y1 x2 y2 [color] [label]\n\n" +
+      "Circle:\n" +
+      "[c] x y r [color] [label]\n\n" +
+      "Polygon:\n" +
+      "[poly] x1 y1 x2 y2 ... xn yn [color] [label]\n\n" +
+      "Rectangle:\n" +
+      "[rect] x1 y1 x2 y2 [color] [label]\n\n" +
+      "Bonus:\n" +
+      "[color]\nChanges all objects below with this color\n\n"
 
     return (
       <div>
@@ -109,9 +112,9 @@ class App extends Component {
             Restart scale
           </button>
 
-          <button onClick={this.showGridButton.bind(this)}>
+          {/* <button onClick={this.showGridButton.bind(this)}>
             {this.state.showGrid ? 'Hide' : 'Show'} grid
-          </button>
+          </button> */}
         </div>
 
         <div>
@@ -121,7 +124,7 @@ class App extends Component {
             onChange={this.getInput.bind(this)}
             placeholder={text} />
 
-          <Canvas 
+          <Canvas
             objects={this.state.objects}
             goToOrigin={this.state.goToOrigin}
             goToOriginDone={this.goToOriginDone.bind(this)}
