@@ -6,11 +6,14 @@ const BIG = 5
 const INF = 100000
 
 export function draw(objectProps) {
-  const { type, ctx, canvas, data, scale, defaultColor } = objectProps;
+  const {
+    type,
+    ctx, canvas,
+    data, scale,
+    defaultColor, showVertices } = objectProps;
 
   function drawTextAt(text, x, y, color) {
     if (text.length > 0) {
-      // console.log("drawTextAt");
 
       if (color !== "transparent") {
         let fontSize = Math.min(20, Math.max(18, scale))
@@ -22,7 +25,6 @@ export function draw(objectProps) {
   }
 
   function drawPoint(x, y, color, text = "") {
-    // console.log("drawPoint");
 
     if (color !== "transparent") {
       ctx.fillStyle = lightenColor(color);
@@ -37,7 +39,6 @@ export function draw(objectProps) {
   }
 
   function drawLine(x1, y1, x2, y2, color, text = "") {
-    // console.log("drawLine");
 
     if (color !== "transparent") {
       const k = Math.hypot(x2 - x1, y2 - y1);
@@ -57,7 +58,6 @@ export function draw(objectProps) {
   }
 
   function drawSegment(x1, y1, x2, y2, color, text = "") {
-    // console.log("drawSegment");
 
     if (color !== "transparent") {
       ctx.strokeStyle = lightenColor(color);
@@ -72,7 +72,6 @@ export function draw(objectProps) {
   }
 
   function drawCircle(x, y, r, color, text = "") {
-    // console.log("drawCircle");
 
     if (color !== "transparent") {
       ctx.strokeStyle = lightenColor(color);
@@ -86,14 +85,15 @@ export function draw(objectProps) {
   }
 
   function drawPolygon(polygon, color, text = "") {
-    // console.log("drawPolygon");
 
     if (color !== "transparent") {
       let rightMost = { x: -INF, y: -INF };
       for (let i = 0; i < polygon.length; i++) {
         let j = (i + 1) % polygon.length;
         drawSegment(polygon[i].x, polygon[i].y, polygon[j].x, polygon[j].y, color);
-        drawPoint(polygon[i].x, polygon[i].y, color);
+        if (showVertices) {
+          drawPoint(polygon[i].x, polygon[i].y, color);
+        }
 
         if (polygon[i].x > rightMost.x)
           rightMost = polygon[i];
@@ -104,7 +104,6 @@ export function draw(objectProps) {
   }
 
   function drawRectangle(x1, y1, x2, y2, color, text = "") {
-    // console.log("drawRectangle");
 
     if (color !== "transparent") {
       const polygon = [{ x: x1, y: y1 }, { x: x1, y: y2 }, { x: x2, y: y2 }, { x: x2, y: y1 }];

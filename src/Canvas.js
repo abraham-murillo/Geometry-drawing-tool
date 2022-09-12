@@ -48,10 +48,10 @@ export default function Canvas(props) {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
 
-    // console.log("drawObjects");
 
     // Draws all objects again
     let currentColor = "black";
+    let showVertices = false;
     props.objects.forEach((element) => {
       let data = [...element];
 
@@ -61,6 +61,11 @@ export default function Canvas(props) {
       }
 
       if (currentColor === "transparent") {
+        return;
+      }
+
+      if (data.length === 1 && data[0] === "showVertices") {
+        showVertices = true;
         return;
       }
 
@@ -97,7 +102,8 @@ export default function Canvas(props) {
         canvas: canvas,
         data: data,
         scale: state.scale,
-        defaultColor: currentColor
+        defaultColor: currentColor,
+        showVertices: showVertices
       });
     });
 
@@ -117,7 +123,6 @@ export default function Canvas(props) {
     state.x, state.y]);
 
   function zoomInOut(event) {
-    // console.log("zoomInOut");
 
     const deltaScale = 0.01
 
@@ -133,7 +138,6 @@ export default function Canvas(props) {
   }
 
   function onMouseUp(event) {
-    // console.log("onMouseUp");
 
     setState((prev) => ({
       ...prev,
@@ -142,7 +146,6 @@ export default function Canvas(props) {
   }
 
   function onMouseMove(event) {
-    // console.log("onMouseMove");
 
     const canvas = canvasRef.current
     const ctx = canvas.getContext('2d')
@@ -170,7 +173,6 @@ export default function Canvas(props) {
   }
 
   function onMouseDown(event) {
-    // console.log("onMouseDown");
 
     setState((prev) => ({
       ...prev,
