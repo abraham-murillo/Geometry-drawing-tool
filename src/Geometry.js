@@ -4,6 +4,8 @@ const LINE_WIDTH = 0.4
 const SMALL = 4
 const BIG = 5
 const INF = 100000
+const ALPHA = 0.50
+const LIGHTEN_COLOR = 0
 
 export function draw(objectProps) {
   const {
@@ -14,7 +16,6 @@ export function draw(objectProps) {
 
   function drawTextAt(text, x, y, color) {
     if (text.length > 0) {
-
       if (color !== "transparent") {
         let fontSize = Math.min(20, Math.max(18, scale))
         ctx.font = fontSize + "px Comic Sans MS";
@@ -25,7 +26,6 @@ export function draw(objectProps) {
   }
 
   function drawPoint(x, y, color, text = "") {
-
     if (color !== "transparent") {
       ctx.fillStyle = lightenColor(color);
       ctx.strokeStyle = 'black';
@@ -39,7 +39,6 @@ export function draw(objectProps) {
   }
 
   function drawLine(x1, y1, x2, y2, color, text = "") {
-
     if (color !== "transparent") {
       const k = Math.hypot(x2 - x1, y2 - y1);
       const dirX = (x2 - x1) / k;
@@ -58,7 +57,6 @@ export function draw(objectProps) {
   }
 
   function drawSegment(x1, y1, x2, y2, color, text = "") {
-
     if (color !== "transparent") {
       ctx.strokeStyle = lightenColor(color);
       ctx.beginPath();
@@ -71,43 +69,61 @@ export function draw(objectProps) {
     }
   }
 
-  function drawCircle(x, y, r, color, text = "") {
-
+  function drawCircle(x, y, r, color, text = "", fill = false) {
     if (color !== "transparent") {
       ctx.strokeStyle = lightenColor(color);
       ctx.beginPath()
       ctx.lineWidth = Math.max(SMALL, Math.min(BIG, scale * LINE_WIDTH))
       ctx.arc(x, y, r, 0, 2 * Math.PI)
-      ctx.stroke();
+
+      if (fill) {
+        ctx.fillStyle = lightenColor(color, LIGHTEN_COLOR, ALPHA);
+        ctx.fill();
+      } else {
+        ctx.stroke();
+      }
 
       drawTextAt(text, x + r + 1, y, color);
     }
   }
 
-  function drawPolygon(polygon, color, text = "") {
-
+  function drawPolygon(polygon, color, text = "", fill = false) {
     if (color !== "transparent") {
       let rightMost = { x: -INF, y: -INF };
+
+      let innerArea = new Path2D();
+      innerArea.moveTo(polygon[0].x, polygon[0].y);
       for (let i = 0; i < polygon.length; i++) {
         let j = (i + 1) % polygon.length;
-        drawSegment(polygon[i].x, polygon[i].y, polygon[j].x, polygon[j].y, color);
+
+        if (fill) {
+          innerArea.lineTo(polygon[j].x, polygon[j].y);
+        } else {
+          drawSegment(polygon[i].x, polygon[i].y, polygon[j].x, polygon[j].y, color);
+        }
+
         if (showVertices) {
           drawPoint(polygon[i].x, polygon[i].y, color);
         }
 
-        if (polygon[i].x > rightMost.x)
+        if (polygon[i].x > rightMost.x) {
           rightMost = polygon[i];
+        }
+      }
+
+      if (fill) {
+        ctx.fillStyle = lightenColor(color, LIGHTEN_COLOR, ALPHA);
+        ctx.fill(innerArea, 'evenodd');
       }
 
       drawTextAt(text, rightMost.x, rightMost.y, color);
     }
   }
 
-  function drawRectangle(x1, y1, x2, y2, color, text = "") {
-
+  function drawRectangle(x1, y1, x2, y2, color, text = "", fill = false) {
     if (color !== "transparent") {
       const polygon = [{ x: x1, y: y1 }, { x: x1, y: y2 }, { x: x2, y: y2 }, { x: x2, y: y1 }];
-      drawPolygon(polygon, color, text);
+      drawPolygon(polygon, color, text, fill);
     }
   }
 
@@ -130,9 +146,16 @@ export function draw(objectProps) {
   function getText(properties) {
     let text = "";
     for (let x of properties)
-      if (!isColor(x))
+      if (!isColor(x) && x !== "fill")
         text += " " + x;
     return text;
+  }
+
+  function getFill(properties) {
+    for (let x of properties)
+      if (x === "fill")
+        return true;
+    return false;
   }
 
   if (type[0] === 'p') {
@@ -144,10 +167,12 @@ export function draw(objectProps) {
           const y = getY(data[i + 1]);
           polygon.push({ x, y });
         }
+
       const color = getColor(data.slice(2 * polygon.length));
       const text = getText(data.slice(2 * polygon.length));
+      const fill = getFill(data.slice(2 * polygon.length));
 
-      drawPolygon(polygon, color, text);
+      drawPolygon(polygon, color, text, fill);
     } else {
       const x = getX(data[0]);
       const y = getY(data[1]);
@@ -180,8 +205,9 @@ export function draw(objectProps) {
     const r = scale * parseFloat(data[2]);
     const color = getColor(data.slice(3));
     const text = getText(data.slice(3));
+    const fill = getFill(data.slice(3));
 
-    drawCircle(x, y, r, color, text);
+    drawCircle(x, y, r, color, text, fill);
   } else if (type[0] === 'r') {
     const x1 = getX(data[0]);
     const y1 = getY(data[1]);
@@ -189,11 +215,11 @@ export function draw(objectProps) {
     const y2 = getY(data[3]);
     const color = getColor(data.slice(4));
     const text = getText(data.slice(4));
+    const fill = getFill(data.slice(4));
 
-    drawRectangle(x1, y1, x2, y2, color, text);
+    drawRectangle(x1, y1, x2, y2, color, text, fill);
   }
 }
-
 
 export function drawGrid(props) {
   // This don't scale itself :c
@@ -214,5 +240,6 @@ export function drawGrid(props) {
   ctx.moveTo(0, 0)
   ctx.lineTo(0, deltaY * scale)
   ctx.stroke()
+
   return ctx.createPattern(canvas, 'repeat')
 }

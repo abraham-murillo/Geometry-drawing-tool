@@ -59,25 +59,22 @@ function toHex(int) {
   return hex.length === 1 ? "0" + hex : hex;
 }
 
-export function lightenColor(col, amt = 40) {
-  if (col.charAt(0) !== '#') {
-    col = parseColor(getRGB(col));
+export function lightenColor(color, amt = 0, alpha = 0) {
+  if (color.charAt(0) !== '#') {
+    color = parseColor(getRGB(color));
   }
 
-  var cur = col.charAt(0) === '#' ? col.substring(1, 7) : col;
+  let cur = color.charAt(0) === '#' ? color.substring(1, 7) : color;
 
-  var r = Math.max(Math.min(255, parseInt(cur.substring(0, 2), 16) + amt), 0).toString(16)
-  var g = Math.max(Math.min(255, parseInt(cur.substring(2, 4), 16) + amt), 0).toString(16)
-  var b = Math.max(Math.min(255, parseInt(cur.substring(4, 6), 16) + amt), 0).toString(16)
+  let r = Math.max(Math.min(255, parseInt(cur.substring(0, 2), 16) + amt), 0);
+  let g = Math.max(Math.min(255, parseInt(cur.substring(2, 4), 16) + amt), 0);
+  let b = Math.max(Math.min(255, parseInt(cur.substring(4, 6), 16) + amt), 0);
+  let a = Math.round(alpha * 255);
 
-  const rr = (r.length < 2 ? '0' : '') + r
-  const gg = (g.length < 2 ? '0' : '') + g
-  const bb = (b.length < 2 ? '0' : '') + b
-
-  var brightness = 0.2126 * r + 0.7152 * g + 0.0722 * b;
-  if (brightness < 40) {
-    col = `#${rr}${gg}${bb}`
+  let hex = `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+  if (a) {
+    hex += toHex(a);
   }
 
-  return col
+  return hex;
 }
