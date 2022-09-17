@@ -22,7 +22,15 @@ export default function Canvas(props) {
       dragging: false,
       x: 0,
       y: 0,
-    }))
+    }));
+    props.restartScaleDone();
+  }
+
+  function goToOrigin() {
+    // console.log("go to origin");
+    // console.log(state);
+    const ctx = canvasRef.current.getContext('2d');
+    props.goToOriginDone();
   }
 
   function prepareCanvas() {
@@ -47,7 +55,6 @@ export default function Canvas(props) {
   function drawObjects() {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
-
 
     // Draws all objects again
     let currentColor = "black";
@@ -113,17 +120,20 @@ export default function Canvas(props) {
   useEffect(() => {
     if (props.restartScale) {
       restartScale();
-      props.restartScaleDone();
+    }
+    if (props.goToOrigin) {
+      goToOrigin();
     }
     prepareCanvas();
     drawObjects();
   }, [
-    props.objects, props.restartScale,
+    props.goToOrigin,
+    props.restartScale,
+    props.objects,
     state.dragging, state.scale,
     state.x, state.y]);
 
   function zoomInOut(event) {
-
     const deltaScale = 0.01
 
     setState((prev) => {
@@ -138,7 +148,6 @@ export default function Canvas(props) {
   }
 
   function onMouseUp(event) {
-
     setState((prev) => ({
       ...prev,
       dragging: false
@@ -146,9 +155,7 @@ export default function Canvas(props) {
   }
 
   function onMouseMove(event) {
-
-    const canvas = canvasRef.current
-    const ctx = canvas.getContext('2d')
+    const ctx = canvasRef.current.getContext('2d')
 
     setState((prevState) => {
       let curState = prevState
@@ -173,7 +180,6 @@ export default function Canvas(props) {
   }
 
   function onMouseDown(event) {
-
     setState((prev) => ({
       ...prev,
       dragging: true,

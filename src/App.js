@@ -100,14 +100,14 @@ class App extends Component {
       "[rect] x1 y1 x2 y2 [color] [label] [fill]\n\n" +
       "Bonus:\n" +
       "[color]\nChanges all objects below with this color\n\n" +
-      "[showVertices]\nShows circles at the vertices in all geometric shapes bellow\n\n"
+      "[showVertices]\nShows circles at the vertices in all geometric shapes below\n\n"
 
     return (
-      <div>
+      <div className="global-div">
         <div className="multi-button">
-          <button onClick={this.goToOriginButton.bind(this)} >
+          {/* <button onClick={this.goToOriginButton.bind(this)} >
             Go to origin
-          </button>
+          </button> */}
 
           <button onClick={this.restartScaleButton.bind(this)} >
             Restart scale
@@ -118,7 +118,7 @@ class App extends Component {
           </button> */}
         </div>
 
-        <div>
+        <div className="image-wrapper">
           <textarea
             type="text"
             className="input"

@@ -6,31 +6,27 @@ body {
   text-align: center;
 }
 
+.global-div {
+  height: 100vh;
+}
+
+.image-wrapper {
+  display: flex;
+  width: 100%;
+  padding: 0px 16px;
+  height: 100%;
+}
+
 .input {
-  position: static;
-  /* display: block; */
-  padding: .5em;
-  width: 22vw;
-  height: 48vw;
-  margin: 0vw 2vw;
-  font-size: large;
+  width: 25%;
   background-color: white;
-  border:black 1px solid;
+  border: black 1px solid;
+  margin: 16px 16px 16px 0px;
+  font-size: 1rem;
 }
 
 .image {
-  position: static;
-  display: inline-block;
-  padding: 0;
-  width: 70vw;
-  height: 48vw;
-  /* margin: 0vw 2vw; */
-  border:black 1px solid;
-}
-
-.current-position {
-  position: fixed;
-  display: inline-block;
-  left: 60vw;
-  text-align: center;
+  width: 75%;
+  border: black 1px solid;
+  margin: 16px 0px;
 }

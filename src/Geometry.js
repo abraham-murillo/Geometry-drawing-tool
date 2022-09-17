@@ -4,8 +4,8 @@ const LINE_WIDTH = 0.4
 const SMALL = 4
 const BIG = 5
 const INF = 100000
-const ALPHA = 0.50
-const LIGHTEN_COLOR = 0
+const ALPHA = 0.65
+const LIGHTEN_COLOR = 30
 
 export function draw(objectProps) {
   const {
